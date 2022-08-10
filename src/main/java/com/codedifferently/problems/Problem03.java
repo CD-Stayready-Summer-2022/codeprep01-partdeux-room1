@@ -1,40 +1,45 @@
 package com.codedifferently.problems;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Problem03 {
     /*
-        1) use java's sort to sort possibleFamilyMembers
-        2) find the index of the number argument in possibleFamilyMembers
+        1) Use Arrays.sort(<array>) to sort possibleFamilyMembers
+        2) create a variable called startIndex that holds the index of the number argument in possibleFamilyMembers
         3) create ArrayList of type Integer to be our output array
         4) add number argument to the output arrayList just created
-        5) create 2 variables equal to startIndex that will be used as the indexes of the
-              comparators for the left and right side of the target number
-        6) create variable for the index to the right of the right comparator index
-            if start index is >= the length of possibleFamilyMembers - 1, assign rightIndex to
+        5) create a variable equal to startIndex called rightCompareIndex
+        6) create a variable equal to startIndex called leftCompare Index
+        7) create variable called rightIndex
+            if startIndex is >= the length of possibleFamilyMembers - 1, assign rightIndex to
                 length of possibleFamilyMembers - 1
-        7) create variable for the index to the left of the left comparator index
+            otherwise, assign rightIndex to rightCompareIndex + 1
+        8) create variable called leftIndex
             if startIndex <= 0, assign leftIndex to 0
-        8) create while loop with condition:
-                left index >= 0 and right index is < length of possibleFamily members
-            9) create 4 variables to keep track of the values in possibleFamilyMembers
-                    at the indexes found in step 5, 6, and 7
-            10) get current difference between the value of the right comparator found from index in step 5
-                    and the value of the index to the right
-            11) get current difference between the value of the left comparator found from index in step 5
-                    and the value of the index to the left
-            12) if right difference from step 10 is equal to 1
-                    a) add value to the right of right comparator to output arrayList from step 3
-                    b) update right comparator index to be the right index
-                    c) increment the right index by 1
-            13) if left difference from step 10 is equal to 1
-                    a) add value to the left of left comparator to output arrayList from step 3
-                    b) update left comparator index to be the left index
-                    c) decrement the left index by 1
-         14) convert output an arrayList to integer array and then sort the array
-         15) return the converted and sorted integer array
+            otherwise, assign leftIndex to leftCompareIndex - 1
+        9) create while loop with condition: leftIndex >= 0 and rightIndex is < length of possibleFamilyMembers
+
+            10) Create 4 variables that represent values at 4 found indexes:
+                    1) valueRight that equals the value at index rightIndex in possibleFamilyMembers
+                    2) valueRightCompare that equals the value at index rightCompareIndex in possibleFamilyMembers
+                    3) valueLeft that equals the value at index leftIndex in possibleFamilyMembers
+                    4) valueLeftCompare that equals the value at index leftCompareIndex in possibleFamilyMembers
+            11) Assign absolute difference between valueRight and valueRightCompare to a variable called rightDifference
+            12) Assign absolute difference between valueLeft and valueLeftCompare to a variable called leftDifference
+            13) if rightDifference from step 11 is equal to 1
+                    a) add valueRight to output arrayList from step 3
+                    b) Update rightCompareIndex by assigning rightIndex to it
+                    c) Increment rightIndex by 1
+            14) if leftDifference from step 12 is equal to 1
+                    a) add valueLeft to output arrayList from step 3
+                    b) Update leftCompareIndex by assigning leftIndex to it
+                    c) Decrement leftIndex by 1
+
+         15) Convert output arrayList to integer array and then sort the array
+         16) return the converted and sorted integer array
 
     */
 
@@ -61,10 +66,30 @@ public class Problem03 {
         int startIndex = family.indexOf(number);
         ArrayList<Integer> output = new ArrayList<>();
         output.add(number);
-        int leftComparatorIndex = startIndex;
-        int rightComparatorIndex = startIndex;
-        int leftIndex = startIndex <= 0 ? 0 : leftComparatorIndex - 1;
-        int rightIndex = startIndex >= possibleFamilyMembers.length - 1 ?
-        return null;
+        int rightCompareIndex = startIndex;
+        int leftCompareIndex = startIndex;
+        int rightIndex = startIndex >= possibleFamilyMembers.length - 1 ? possibleFamilyMembers.length - 1 : rightCompareIndex + 1;
+        int leftIndex = startIndex <= 0 ? 0 : leftCompareIndex - 1;
+        while (leftIndex >= 0 && rightIndex < possibleFamilyMembers.length) {
+            int valueRight = family.get(rightIndex);
+            int valueRightCompare = family.get(rightCompareIndex);
+            int valueLeft = family.get(leftIndex);
+            int valueLeftCompare = family.get(leftCompareIndex);
+            int rightDifference = Math.abs(valueRight - valueRightCompare);
+            int leftDifference = Math.abs(valueLeft - valueLeftCompare);
+            if (rightDifference == 1) {
+                output.add(valueRight);
+                rightCompareIndex = rightIndex;
+                rightIndex++;
+            }
+            if (leftDifference == 1) {
+                output.add(valueLeft);
+                leftCompareIndex = leftIndex;
+                leftIndex--;
+            }
+        }
+        Integer[] outputArray = output.toArray(new Integer[0]);
+        Arrays.sort(outputArray);
+        return outputArray;
     }
 }
