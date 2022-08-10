@@ -26,6 +26,7 @@ public class Problem02Test {
         Integer actual = Problem02.cousinTag(cousins,startingIndex, name);
         Assertions.assertEquals(expected, actual);
     }
+    //["Hakim", "Greg", "Loki", "Frank", "Ed", "Peter", "Victor", "Hakim", "Greg", "Loki", "Frank", "Ed", "Peter", "Victor"]
 
     @Test
     public void challengeTest03(){
